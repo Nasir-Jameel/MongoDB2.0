@@ -1,7 +1,8 @@
 const express = require ("express")
 const app =  express();
 const path = require("path")
-const userModel = require('./models/user')
+const userModel = require('./models/user');
+const user = require("./models/user");
 
 app.set( "view engine","ejs")
 app.use (express.json())
@@ -17,6 +18,16 @@ app.get("/read",async(req, res) =>{
   res.render("read.ejs",{users})
  
 })
+app.get("/edit/:userid", async(req,res)=>{
+    let user = await userModel.findOne({_id: req.params.userid})
+    res.render("edit", { user });
+})
+app.post("/update/:userid", async(req,res)=>{
+ let {name, image, email} = req.body
+let updatedUser = await  userModel.findOneAndUpdate({_id: req.params.userid} ,{image,name, email}, {new: true})
+res.redirect("/read")
+})
+
 app.post("/create", async(req,res)=>{
     let {name, email, image} = req.body
 let createdUser = await userModel.create({
