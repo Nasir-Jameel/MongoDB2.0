@@ -27,8 +27,8 @@ let createdUser = await userModel.create({
 res.redirect("/read");
 })
 
-app.get("/delete/:id"), async(req,res)=>{
+app.get("/delete/:id", async(req,res)=>{
     let users = await userModel.findOneAndDelete({_id: req.params.id})
     res.redirect("/read")
-}
+})
 app.listen(3000)
